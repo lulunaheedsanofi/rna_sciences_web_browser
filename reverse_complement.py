@@ -4,6 +4,12 @@ import re
 import altair as alt
 
 def run():
+    
+    col1, col2 = st.columns([1, 5])  # Adjust ratio as needed
+
+    with col1:
+        st.image("sanofi_2.png", width=400)  # Adjust width as needed
+
     st.set_page_config(
         page_title="Reverse Complement",
         page_icon="dna_logo.png",
@@ -11,19 +17,19 @@ def run():
         initial_sidebar_state="expanded"
     )
 
-    st.markdown(
-        """
-        <style>
-        body {
-            background-color: #ACE1AF;
-        }
-        .stApp {
-            background-color: #ACE1AF;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+    # st.markdown(
+    #     """
+    #     <style>
+    #     body {
+    #         background-color: #ACE1AF;
+    #     }
+    #     .stApp {
+    #         background-color: #ACE1AF;
+    #     }
+    #     </style>
+    #     """,
+    #     unsafe_allow_html=True
+    # )
 
     st.title("Reverse Complement DNA/RNA")
 
@@ -57,28 +63,33 @@ def run():
                 tooltip=['Nucleotide', 'Percent']
             ).properties(
                 title=title,
-                width=600,
-                height=400
+                width=800,
+                height=300
             )
             st.altair_chart(chart, use_container_width=False)
 
     # UI layout
-    col1, col2 = st.columns(2)
-    with col1:
-        with st.container(border=True):
-            seq_DNA = st.text_input("Enter a DNA sequence:")
-            if seq_DNA:
+    #col1, col2 = st.columns(2)
+
+    with st.container(border=True):
+        seq_DNA = st.text_input("Enter a DNA/RNA sequence (case insensitive and spaces + special characters ignored):")
+        seq_DNA = seq_DNA.upper()
+        if seq_DNA:
+            if 'T' in seq_DNA:
                 create_nucleotide_summary(seq_DNA, "Original DNA Nucleotide Frequency", ['A', 'T', 'C', 'G'])
                 result = reverse_complement_dna(seq_DNA)
                 st.write("Reverse Complement DNA:", result)
                 create_nucleotide_summary(result, "Reverse Complement DNA Nucleotide Frequency", ['A', 'T', 'C', 'G'])
-
-    with col2:
-        with st.container(border=True):
-            seq_RNA = st.text_input("Enter an RNA sequence:")
-            if seq_RNA:
-                create_nucleotide_summary(seq_RNA, "Original RNA Nucleotide Frequency", ['A', 'U', 'C', 'G'])
-                result = reverse_complement_rna(seq_RNA)
+            elif 'U' in seq_DNA:
+                create_nucleotide_summary(seq_DNA, "Original RNA Nucleotide Frequency", ['A', 'U', 'C', 'G'])
+                result = reverse_complement_rna(seq_DNA)
                 st.write("Reverse Complement RNA:", result)
                 create_nucleotide_summary(result, "Reverse Complement RNA Nucleotide Frequency", ['A', 'U', 'C', 'G'])
-
+            else:
+                create_nucleotide_summary(seq_DNA, "Original Sequence Nucleotide Frequency", ['A', 'U/T', 'C', 'G'])
+                result1 = reverse_complement_dna(seq_DNA)
+                result2 = reverse_complement_rna(seq_DNA)
+                st.write("Reverse Complement DNA:", result1)
+                create_nucleotide_summary(result1, "Reverse Complement DNA Nucleotide Frequency", ['A', 'T', 'C', 'G'])
+                st.write("Reverse Complement RNA:", result2)
+                create_nucleotide_summary(result2, "Reverse Complement RNA Nucleotide Frequency", ['A', 'U', 'C', 'G'])

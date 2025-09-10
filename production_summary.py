@@ -5,8 +5,19 @@ from matplotlib.lines import Line2D
 import numpy as np
 import seaborn as sns
 import altair as alt
+from altair_saver import save
+from io import BytesIO
+import selenium
+import vl_convert as vegalite_to_png
+
+
 
 def run():
+    
+    col1, col2 = st.columns([1, 5])  # Adjust ratio as needed
+
+    with col1:
+        st.image("sanofi_2.png", width=400)  # Adjust width as needed
     
     st.set_page_config(
         page_title="Production Summary",
@@ -15,22 +26,20 @@ def run():
         initial_sidebar_state="expanded"
     )
 
-
-    # st.markdown(
-    #         """
-    #         <style>
-    #         body {
-    #             background-color: #89CFF0;
-    #         }
-    #         .stApp {
-    #             background-color: #89CFF0;
-    #         }
-    #         </style>
-    #         """,
-    #         unsafe_allow_html=True
-    #     )
-    # Streamlit UI
     st.title("Production Summary")
+
+    
+    def get_png_download_button(chart, filename, key):
+        chart_json = chart.to_json()
+        png_bytes = vegalite_to_png.vegalite_to_png(chart_json, scale=2)
+        buffer = BytesIO(png_bytes)
+        st.download_button(
+            label=f"Download {filename}",
+            data=buffer,
+            file_name=filename,
+            mime="image/png",
+            key=key
+        )
 
     def read_data(uploaded_file):
         try:
@@ -180,9 +189,6 @@ def run():
             "#cbaacb", "#f1c0e8", "#b5ead7", "#ffdac1", "#ffb7b2",
             "#d5aaff", "#c7ceea", "#e2f0cb", "#f3c1c6", "#f6dfeb"
         ]
-
-    
-
  
         def plot_altair_donut_chart(counts, title):
             # Prepare the data
@@ -206,9 +212,6 @@ def run():
             )
 
             return chart.configure_view(stroke=None)
-
-
-
 
 
         # Donut chart for 2024
@@ -245,14 +248,9 @@ def run():
     excel_sheet2 = pd.read_excel(uploaded_file2, engine='openpyxl')
     excel_sheet3 = pd.read_excel(uploaded_file3, engine='openpyxl')
 
-
-
     chart1, chart2, chart3 = create_project_id_report(excel_sheet3)
     bubble_plot = create_monthly_report(excel_sheet1, excel_sheet2)
 
-    #st.altair_chart(chart1, use_container_width=True)
-    #st.altair_chart(chart2, use_container_width=True)
-    #st.altair_chart(chart3, use_container_width=True)
   
     with st.container(border=True):
         st.markdown("Total pDNAs by Project")
@@ -265,6 +263,7 @@ def run():
                 st.markdown("<h4 style='font-size:18px;'>Most Recent Month</h4>", unsafe_allow_html=True)
                 #st.subheader("Most Recent Month")
                 st.altair_chart(chart3, use_container_width=True)
+                get_png_download_button(chart3, "chart_recent.png", key= "download_chart_recent")
                 st.markdown("")
                 st.markdown("")
                 st.markdown("")
@@ -274,6 +273,7 @@ def run():
                 st.markdown("<h4 style='font-size:18px;'>Project ID Distribution in 2024</h4>", unsafe_allow_html=True)
                 #st.subheader("Project ID Distribution in 2024")
                 st.altair_chart(chart1, use_container_width=True)
+                get_png_download_button(chart1, "chart_2024.png", key = "download_chart_2024")
                 st.markdown("")
                 st.markdown("")
                 st.markdown("")
@@ -285,6 +285,7 @@ def run():
                 st.markdown("<h4 style='font-size:18px;'>Project ID Distribution in 2025</h4>", unsafe_allow_html=True)
                 #st.subheader("Project ID Distribution in 2025")
                 st.altair_chart(chart2, use_container_width=True)
+                get_png_download_button(chart2, "chart_2025.png", "download_chart_2025")
                 st.markdown("")
                 st.markdown("")
                 st.markdown("")

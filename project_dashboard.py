@@ -11,6 +11,11 @@ import numpy as np
 import seaborn as sns
 def run():
 
+    col1, col2 = st.columns([1, 5])  # Adjust ratio as needed
+
+    with col1:
+        st.image("sanofi_2.png", width=400)  # Adjust width as needed
+
     st.set_page_config(
         page_title="Project Dashboard",
         page_icon= "dna_logo.png",

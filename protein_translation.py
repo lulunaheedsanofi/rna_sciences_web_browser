@@ -2,8 +2,17 @@ import streamlit as st
 import re
 import pandas as pd
 import altair as alt
+import base64
+import mimetypes
+import os
 
 def run():
+
+    col1, col2 = st.columns([1, 5])  # Adjust ratio as needed
+
+    with col1:
+        st.image("sanofi_2.png", width=400)  # Adjust width as needed
+
     st.set_page_config(
         page_title="Protein Translation",
         page_icon="dna_logo.png",
@@ -67,32 +76,30 @@ def run():
                 tooltip=['Nucleotide', 'Percent']
             ).properties(
                 title=title,
-                width=600,
-                height=400
+                width=800,
+                height=300
             )
             st.altair_chart(chart, use_container_width=False)
 
     # UI
-    col1, col2 = st.columns(2)
-
-    with col1:
-        with st.container(border=True):
-            seq_DNA = st.text_input("Enter a DNA sequence:")
-            seq_DNA = clean_string(seq_DNA)
-            if len(seq_DNA) % 3 == 0:
+    
+    with st.container(border=True):
+        seq_DNA = st.text_input("Enter a DNA/RNA sequence (case insensitive and spaces + special characters ignored):")
+        seq_DNA = clean_string(seq_DNA)
+        seq_DNA = seq_DNA.upper()
+        if len(seq_DNA) % 3 == 0:
+            if 'T' in seq_DNA:
                 result = translate_dna_to_protein(seq_DNA)
                 st.write("Protein Translation of DNA:", result)
                 create_nucleotide_summary(seq_DNA, "DNA Nucleotide Frequency", ['A', 'T', 'C', 'G'])
-            else:
-                st.write("Please enter a string that has a length divisible by 3")
-
-    with col2:
-        with st.container(border=True):
-            seq_RNA = st.text_input("Enter an RNA sequence:")
-            seq_RNA = clean_string(seq_RNA)
-            if len(seq_RNA) % 3 == 0:
-                result = translate_rna_to_protein(seq_RNA)
+            elif 'U' in seq_DNA:
+                result = translate_rna_to_protein(seq_DNA)
                 st.write("Protein Translation of RNA:", result)
-                create_nucleotide_summary(seq_RNA, "RNA Nucleotide Frequency", ['A', 'U', 'C', 'G'])
+                create_nucleotide_summary(seq_DNA, "RNA Nucleotide Frequency", ['A', 'U', 'C', 'G'])
             else:
-                st.write("Please enter a string that has a length divisible by 3")
+                result = translate_dna_to_protein(seq_DNA)
+                st.write("Protein Translation of Sequence:", result)
+                create_nucleotide_summary(seq_DNA, "Sequence Nucleotide Frequency", ['A', 'U/T', 'C', 'G'])
+        else:
+            st.write("Please enter a string that has a length divisible by 3")
+
