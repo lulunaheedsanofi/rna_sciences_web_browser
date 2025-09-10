@@ -6,3 +6,4 @@ seaborn
 openpyxl
 altair
 altair_saver
+vl-convert-python
