@@ -16,8 +16,11 @@ st.set_page_config(
 )
 
 # Inject custom CSS
+
+
 st.markdown("""
     <style>
+        /* Sidebar styling */
         [data-testid="stSidebar"] {
             background-color: #4B0082;
             padding: 20px;
@@ -27,15 +30,18 @@ st.markdown("""
             color: white !important;
         }
 
-        .main {
-            background-color: #E6DAF5;
+        /* Main content area styling */
+        [data-testid="stAppViewContainer"] > div:first-child {
+            background-color: #DBF3FA;
             padding: 2em;
         }
 
-        .main * {
+        /* Optional: style main content text only */
+        [data-testid="stAppViewContainer"] > div:first-child * {
             color: black !important;
         }
 
+        /* Expander styling */
         div[data-testid="stExpander"] {
             background-color: #4B0082 !important;
             border: none !important;
@@ -55,6 +61,7 @@ st.markdown("""
             background-color: #4B0082 !important;
         }
 
+        /* Button styling */
         button {
             background-color: #6A0DAD !important;
             color: white !important;
@@ -70,6 +77,8 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
+
+
 
 # Initialize session state
 if "selected_section" not in st.session_state:

@@ -7,6 +7,20 @@ import matplotlib.pyplot as plt
 import altair as alt
 
 def run():
+
+    st.markdown(
+            """
+            <style>
+            body {
+                background-color: #DBF3FA;
+            }
+            .stApp {
+                background-color: #DBF3FA;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
     
     st.set_page_config(
         page_title="UMI Pipeline",
@@ -14,8 +28,6 @@ def run():
         layout="wide",
         initial_sidebar_state="expanded"
     )
-
-    
 
     col1, col2 = st.columns([1, 5])  # Adjust ratio as needed
 

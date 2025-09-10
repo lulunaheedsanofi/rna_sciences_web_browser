@@ -11,6 +11,20 @@ import numpy as np
 import seaborn as sns
 def run():
 
+    st.markdown(
+            """
+            <style>
+            body {
+                background-color: #DBF3FA;
+            }
+            .stApp {
+                background-color: #DBF3FA;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+
     col1, col2 = st.columns([1, 5])  # Adjust ratio as needed
 
     with col1:
@@ -27,10 +41,10 @@ def run():
             """
             <style>
             body {
-                background-color: #89CFF0;
+                background-color: #DBF3FA;
             }
             .stApp {
-                background-color: #89CFF0;
+                background-color: #DBF3FA;
             }
             </style>
             """,
