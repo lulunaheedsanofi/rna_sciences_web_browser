@@ -86,7 +86,7 @@ def run():
     #col1, col2 = st.columns(2)
 
     with st.container(border=True):
-        seq_DNA = st.text_input("Enter a DNA/RNA sequence (case insensitive and spaces + special characters ignored):")
+        seq_DNA = st.text_input("Enter a DNA/RNA Sequence (case insensitive and spaces + special characters ignored):")
         seq_DNA = seq_DNA.upper()
         if seq_DNA:
             if 'T' in seq_DNA:

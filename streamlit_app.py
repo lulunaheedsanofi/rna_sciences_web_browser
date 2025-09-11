@@ -6,6 +6,7 @@ import protein_translation
 import production_summary
 import neb_tm_calculator
 import reverse_translation
+import rdpm_search
 
 # Page configuration
 st.set_page_config(
@@ -108,8 +109,11 @@ with st.sidebar:
             st.session_state.selected_section = "Reverse Translation"
 
     with st.expander("Applications", expanded=False):
+        if st.button("RDPM Search Engine"):
+            st.session_state.selected_section = "RDPM Search Engine"
         if st.button("UMI Pipeline Results"):
             st.session_state.selected_section = "UMI Pipeline Results"
+        
 
     with st.expander("Dashboards", expanded=False):
         if st.button("Production Summary"):
@@ -130,3 +134,5 @@ elif st.session_state.selected_section == "Production Summary":
     production_summary.run()
 elif st.session_state.selected_section == "Project Tracker":
     project_dashboard.run()
+elif st.session_state.selected_section == "RDPM Search Engine":
+    rdpm_search.run()

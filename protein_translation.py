@@ -98,7 +98,7 @@ def run():
     # UI
     
     with st.container(border=True):
-        seq_DNA = st.text_input("Enter a DNA/RNA sequence (case insensitive and spaces + special characters ignored):")
+        seq_DNA = st.text_input("Enter a DNA/RNA Sequence (case insensitive and spaces + special characters ignored):")
         seq_DNA = clean_string(seq_DNA)
         seq_DNA = seq_DNA.upper()
         if len(seq_DNA) % 3 == 0:

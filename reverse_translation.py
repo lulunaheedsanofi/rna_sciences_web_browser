@@ -97,7 +97,7 @@ def run():
         return dna_seq, rna_seq, df_dna, df_rna
 
     # UI layout
-    seq_aa = st.text_input("Enter a Protein sequence (case insensitive and spaces + special characters ignored):")
+    seq_aa = st.text_input("Enter a Protein Sequence (case insensitive and spaces + special characters ignored):")
     seq_aa = clean_string(seq_aa)
 
     if seq_aa:
