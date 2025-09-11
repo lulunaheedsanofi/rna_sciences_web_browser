@@ -2,6 +2,12 @@ import streamlit as st
 import pandas as pd
 
 def run():
+    st.set_page_config(
+        page_title="RDPM Search",
+        page_icon="dna_logo.png",
+        layout="wide",
+        initial_sidebar_state="expanded"
+    )
 
     st.markdown(
             """
@@ -22,12 +28,6 @@ def run():
     with col1:
         st.image("sanofi_2.png", width=400)  # Adjust width as needed
 
-    st.set_page_config(
-        page_title="RDPM Search",
-        page_icon="dna_logo.png",
-        layout="wide",
-        initial_sidebar_state="expanded"
-    )
 
     st.title("RDPM Search Engine")
 
