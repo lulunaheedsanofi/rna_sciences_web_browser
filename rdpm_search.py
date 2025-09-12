@@ -33,7 +33,7 @@ def run():
 
 
     df = pd.read_excel('pDNA_mRNAD_24-25.xlsx')
-    selected_columns = ['pDNA Notebook Entry', 'pDNA Notebook Project Code']
+    selected_columns = ['pDNA Notebook Entry', 'pDNA Notebook Project Code', 'mRNAD Project Code']
     df_filtered = df[selected_columns]
 
     # Remove rows where any column contains the string "null"
@@ -43,32 +43,44 @@ def run():
 
     rdpm_codes = []
     descriptions = []
+    mrnad_rdpm_codes = []
+    mrnad_descriptions = []
 
     for n in range(rows):
         curr_code = df_unique.iloc[n, 1] 
         first_part = curr_code.split("_")[0]
         rdpm_codes.append(first_part)
+
+        mrnad_curr_code = df_unique.iloc[n,2]
+        m_first_part = mrnad_curr_code.split("_")[0]
+        mrnad_rdpm_codes.append(m_first_part)
         
         remainder = "_".join(curr_code.split("_")[1:])
         descriptions.append(remainder) 
 
-    cleaned_descriptions = [item.replace("_v_", "") for item in descriptions]
+        m_remainder = "_".join(mrnad_curr_code.split("_")[1:])
+        mrnad_descriptions.append(m_remainder) 
 
+    cleaned_descriptions = [item.replace("_v_", "") for item in descriptions]
+    mrnad_cleaned_descriptions = [item.replace("_v_", "") for item in mrnad_descriptions]
 
     final_df = pd.DataFrame({
         'Ticket Name': df_unique['pDNA Notebook Entry'],
-        'RDPM Code': rdpm_codes,
-        'Description': cleaned_descriptions
+        'pDNA RDPM Code': rdpm_codes,
+        #'pDNA Description': cleaned_descriptions,
+        'mRNAD RDPM Code' : mrnad_rdpm_codes,
+        'Description' : cleaned_descriptions
     })
 
     final_df['Ticket Name'] = final_df['Ticket Name'].str.upper()
-    final_df['RDPM Code'] = final_df['RDPM Code'].str.upper()
+    final_df['pDNA RDPM Code'] = final_df['pDNA RDPM Code'].str.upper()
+    #final_df['pDNA Description'] = final_df['pDNA Description'].str.upper()
+    final_df['mRNAD RDPM Code'] = final_df['mRNAD RDPM Code'].str.upper()
     final_df['Description'] = final_df['Description'].str.upper()
 
     # Utility functions
     def display_rdpm_table(df,keyword):
         keyword_df = df[df.apply(lambda row: row.astype(str).str.contains(keyword).any(), axis=1)]
-
         return keyword_df
 
     
